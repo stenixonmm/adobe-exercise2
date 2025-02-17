@@ -38,12 +38,8 @@ import com.day.cq.wcm.api.components.ComponentContext;
 import com.adobe.aem.guides.wknd.core.models.Byline;
 import com.adobe.cq.wcm.core.components.models.Image;
 
-@Model(
-        adaptables = {SlingHttpServletRequest.class},
-        adapters = {Byline.class},
-        resourceType = {BylineImpl.RESOURCE_TYPE},
-        defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
-)
+@Model(adaptables = { SlingHttpServletRequest.class }, adapters = { Byline.class }, resourceType = {
+        BylineImpl.RESOURCE_TYPE }, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class BylineImpl implements Byline {
     protected static final String RESOURCE_TYPE = "wknd/components/byline";
 
@@ -82,18 +78,17 @@ public class BylineImpl implements Byline {
 
     @Override
     public List<String> getOccupations() {
-
-        if (buggyFunctionThatShouldReturnFalse()) {
-            return Collections.emptyList();
-        }
-
+        LOGGER.trace("called getOccupations()");
+        occupations = null; // This is specific to L340 RDE lesson 2: remove this line
         if (occupations != null) {
+            LOGGER.debug("Sorting occupations in descending order");
             Collections.sort(occupations);
             return new ArrayList<String>(occupations);
         } else {
+            LOGGER.error("No Occupations found for '{}'", name);
             return Collections.emptyList();
         }
-   }
+    }
 
     @Override
     public boolean isEmpty() {
@@ -115,28 +110,8 @@ public class BylineImpl implements Byline {
     }
 
     /**
-     * this function represents a buggy function that should always return false. To
-     * support the use case of the L340 2025 session, it returns true.
-     * 
-     * @return false always
-     */
-    private boolean buggyFunctionThatShouldReturnFalse() {
-        boolean ret = false;
-
-        LOGGER.debug("L340 2025: Something fishy is going on here...");
-        ret = 1 == 1; // INSTRUCTION L340: remove line and the debug log above to return false always
-
-        LOGGER.debug("L340 2025: ret = " + ret);
-        LOGGER.debug("L340 2025: Returning " + ret + " in buggyFunctionThatShouldReturnFalse()");
-        if (ret) {
-            LOGGER.warn(
-                    "L340 2025: buggyFunctionThatShouldReturnFalse() returns true, analysis required to fix the bug");
-        }
-        return ret;
-    }
-
-    /**
-     * @return the Image Sling Model of this resource, or null if the resource cannot create a valid Image Sling Model. 
+     * @return the Image Sling Model of this resource, or null if the resource
+     *         cannot create a valid Image Sling Model.
      */
     private Image getImage() {
         return image;
