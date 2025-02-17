@@ -78,7 +78,7 @@ public class BylineImpl implements Byline {
 
     @Override
     public List<String> getOccupations() {
-        LOGGER.trace("called getOccupations()");
+        LOGGER.info("called getOccupations()");
         occupations = null; // This is specific to L340 RDE lesson 2: remove this line
         if (occupations != null) {
             LOGGER.debug("Sorting occupations in descending order");
